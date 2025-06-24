@@ -1,8 +1,8 @@
 	<?php
-$servername = "database-lab.c8wbqwkjtmtx.us-east-1.rds.amazonaws.com"; // Thay bằng Endpoint RDS của bạn
+$servername = "myrds.c8wbqwkjtmtx.us-east-1.rds.amazonaws.com"; // Thay bằng Endpoint RDS của bạn
 $username = "admin"; // Thay bằng username RDS
-$password = "dinhvien2004"; // Thay bằng mật khẩu RDS
-$dbname = "MyDB";
+$password = "dinhvien"; // Thay bằng mật khẩu RDS
+$dbname = "diem_db";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
