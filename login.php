@@ -1,31 +1,45 @@
-	<?php
-$servername = "myrds.c8wbqwkjtmtx.us-east-1.rds.amazonaws.com"; // Thay bằng Endpoint RDS của bạn
-$username = "admin"; // Thay bằng username RDS
-$password = "dinhvien"; // Thay bằng mật khẩu RDS
-$dbname = "diem_db";
+<?php
+$servername = "database-server-lab7.cjxzvwl8ifcx.us-east-1.rds.amazonaws.com";
+$username = "admin";
+$password = "dinhvien";
+$dbname = "login_db";
 
+// Tạo kết nối
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Kiểm tra kết nối
 if ($conn->connect_error) {
-    die("Kết nối thất bại: " . $conn->connect_error);
+    die("Kết nối không thành công: " . $conn->connect_error);
 }
 
-// Truy vấn dữ liệu
-$sql = "SELECT MaSV, MaMonHoc, Diem FROM Diem";
-$result = $conn->query($sql);
-
-// Hiển thị dữ liệu
-if ($result->num_rows > 0) {
-    echo "<h2>Danh sách điểm</h2>";
-    echo "<table border='1'><tr><th>MaSV</th><th>MaMonHoc</th><th>Diem</th></tr>";
-    while($row = $result->fetch_assoc()) {
-        echo "<tr><td>" . $row["MaSV"] . "</td><td>" . $row["MaMonHoc"] . "</td><td>" . $row["Diem"] . "</td></tr>";
+// Kiểm tra nếu form đã submit
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = $_POST["username"];
+    $password = $_POST["password"];
+    // Truy vấn lấy dữ liệu từ database
+    $sql = "SELECT * FROM User WHERE username='$username' AND password='$password'";
+    $result = $conn->query($sql);
+    // Kiểm tra số lượng bản ghi trả về
+    if ($result->num_rows > 0) {
+        echo "Bạn đã đăng nhập thành công";
+    } else {
+        echo "Bạn đã đăng nhập không thành công";
     }
-    echo "</table>";
-} else {
-    echo "0 kết quả.";
 }
-
-$conn->close();
 ?>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng nhập</title>
+</head>
+<body>
+    <h2>Đăng nhập</h2>
+    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+        <label>Tên đăng nhập:</label>
+        <input type="text" name="username"><br><br>
+        <label>Mật khẩu:</label>
+        <input type="password" name="password"><br><br>
+        <input type="submit" value="Đăng nhập">
+    </form>
+</body>
+</html>
